@@ -65,7 +65,7 @@ const TodoCreateForm: React.FC = () => {
     return (
         <form action={ handleOnSubmit }>
             <Item variant="outline"
-                  className="ackdrop-blur-xs bg-transparent shadow-md">
+                  className="backdrop-blur-xs bg-transparent shadow-md">
                 <ItemContent>
                     <ItemTitle className="w-full">
                         <Field>
