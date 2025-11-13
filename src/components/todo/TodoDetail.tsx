@@ -14,6 +14,12 @@ import { Label } from "@/components/ui/label";
 import { todoStatusMap } from "@/constants/todos";
 import { Todo } from "@/types/todo.types";
 import useModal from "@/hooks/useModal";
+import { format, setDefaultOptions } from "date-fns";
+import { de } from "date-fns/locale";
+
+setDefaultOptions( {
+    locale: de
+} );
 
 type TodoEditFormProps = {
     children: React.ReactNode,
@@ -52,8 +58,20 @@ const TodoDetail: React.FC<TodoEditFormProps> = ( { children, todo } ) => {
                     <p>{ todoStatusMap.get( todo.status ) }</p>
                 </div>
                 <div className="grid gap-3">
+                    <Label>Currently Grammar Checked?</Label>
+                    <p>{ todo.isGrammarChecked ? "Yes" : "No" }</p>
+                </div>
+                <div className="grid gap-3">
                     <Label>Current Version</Label>
                     <p>{ todo.currentVersion }</p>
+                </div>
+                <div className="grid gap-3">
+                    <Label>Created</Label>
+                    <p>{ format( todo.created, "HH:mm - dd.MM.yyyy" ) }</p>
+                </div>
+                <div className="grid gap-3">
+                    <Label>Last Modified</Label>
+                    <p>{ format( todo.lastModified, "HH:mm - dd.MM.yyyy" ) }</p>
                 </div>
             </div>
             <SheetFooter>

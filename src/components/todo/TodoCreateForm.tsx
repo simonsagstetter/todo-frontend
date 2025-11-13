@@ -15,12 +15,12 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/constants/messages";
 
 type FormState = {
     description: string;
-    checkGrammar: boolean;
+    shouldGrammarCheck: boolean;
 }
 
 const INITIAL_STATE: FormState = {
     description: "",
-    checkGrammar: false
+    shouldGrammarCheck: false
 }
 
 const TodoCreateForm: React.FC = () => {
@@ -36,7 +36,7 @@ const TodoCreateForm: React.FC = () => {
             setTodoInput( INITIAL_STATE );
         },
         onError: ( error, variables ) => {
-            setTodoInput( { description: variables.description, checkGrammar: variables.checkGrammar } );
+            setTodoInput( { description: variables.description, shouldGrammarCheck: variables.shouldGrammarCheck } );
             console.log( variables )
             toast.error( ERROR_MESSAGES.CREATE )
         },
@@ -47,7 +47,7 @@ const TodoCreateForm: React.FC = () => {
         const newTodo: TodoCreateDTO = {
             description: formData.get( "todo" )?.toString() || "",
             status: TodoStatus.OPEN,
-            checkGrammar: formData.get( "grammarCheck" ) != null || false
+            shouldGrammarCheck: formData.get( "shouldGrammarCheck" ) != null || false
         };
         mutate( newTodo )
     }
@@ -58,7 +58,7 @@ const TodoCreateForm: React.FC = () => {
     }
 
     const handleCheckGrammarChange = ( checked: boolean ) => {
-        setTodoInput( prev => ( { ...prev, checkGrammar: checked } ) );
+        setTodoInput( prev => ( { ...prev, shouldGrammarCheck: checked } ) );
     }
 
 
@@ -80,14 +80,14 @@ const TodoCreateForm: React.FC = () => {
                                    disabled={ isPending }
                                    autoFocus/>
                             <Field orientation="horizontal">
-                                <Checkbox id="grammarCheck"
-                                          name="grammarCheck"
+                                <Checkbox id="shouldGrammarCheck"
+                                          name="shouldGrammarCheck"
                                           disabled={ isPending }
-                                          checked={ todoInput.checkGrammar }
+                                          checked={ todoInput.shouldGrammarCheck }
                                           onCheckedChange={ handleCheckGrammarChange }
                                 />
                                 <FieldLabel
-                                    htmlFor="grammarCheck"
+                                    htmlFor="shouldGrammarCheck"
                                     className="font-normal"
                                 >
                                     Check spelling and grammar?

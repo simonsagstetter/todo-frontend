@@ -8,20 +8,20 @@ type Todo = {
     id: string;
     description: string;
     status: TodoStatus;
+    isGrammarChecked: boolean;
     currentVersion: number;
+    created: string;
+    lastModified: string;
 }
 
-type TodoByStatus = Partial<Record<TodoStatus, Todo[]>>;
-
-type TodoDTO = Omit<Todo, "id" | "currentVersion">;
+type TodoDTO = Omit<Todo, "id" | "currentVersion" | "created" | "lastModified" | "isGrammarChecked">;
 
 type TodoCreateDTO = TodoDTO & {
-    checkGrammar: boolean;
+    shouldGrammarCheck: boolean;
 }
 
 export {
     type Todo,
-    type TodoByStatus,
     type TodoDTO,
     type TodoCreateDTO,
     TodoStatus

@@ -1,6 +1,6 @@
 import React from "react";
 import { Todo, TodoStatus } from "@/types/todo.types";
-import { Item, ItemActions, ItemContent, ItemTitle } from "@/components/ui/item";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon, CheckIcon, LoaderCircleIcon, XIcon } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
@@ -11,6 +11,7 @@ import { ApiError } from "@/lib/exceptions";
 import TodoDetail from "@/components/todo/TodoDetail";
 import useTodo from "@/hooks/useTodo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/constants/messages";
+import { Badge } from "@/components/ui/badge";
 
 type TodoBoardItemProps = {
     status: TodoStatus;
@@ -86,6 +87,10 @@ const TodoBoardItem: React.FC<TodoBoardItemProps> = ( { status, todo } ) => {
                   className={ `backdrop-blur-xs bg-transparent cursor-pointer shadow-md ${ todoVariants[ status ] }` }>
                 <ItemContent>
                     <ItemTitle>{ todo.description }</ItemTitle>
+                    { todo.isGrammarChecked ?
+                        <ItemDescription className="text-xs">
+                            <Badge variant="outline" className="text-[0.5rem] uppercase">Grammar checked</Badge>
+                        </ItemDescription> : null }
                 </ItemContent>
                 <ItemActions>
                     <Button variant="ghost" size="icon" className="cursor-pointer" onClick={ handleOnClick }
