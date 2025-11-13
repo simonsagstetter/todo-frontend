@@ -39,7 +39,7 @@ public class SPAController {
 
 ## Watch Demo
 
-[![Watch the video](https://img.youtube.com/vi/7cAqxA3RdXs/maxresdefault.jpg)](https://youtu.be/T-D1KVIuvjA)
+[![Watch the video](https://img.youtube.com/vi/7cAqxA3RdXs/maxresdefault.jpg)](https://youtu.be/7cAqxA3RdXs)
 
 ## Getting Started
 
