@@ -37,9 +37,9 @@ public class SPAController {
 
 ```
 
-## Watch Demo
+## Screenshot
 
-[![Watch the video](https://img.youtube.com/vi/7cAqxA3RdXs/maxresdefault.jpg)](https://youtu.be/7cAqxA3RdXs)
+![image](./.github/resources/screenshot.png)
 
 ## Getting Started
 
