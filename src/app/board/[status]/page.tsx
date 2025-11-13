@@ -6,37 +6,39 @@ import { Todo, TodoStatus } from "@/types/todo.types";
 import TodoEmpty from "@/components/todo/TodoEmpty";
 import { TodoSkeletonGroup } from "@/components/todo/TodoSkeleton";
 import TodoBoard from "@/components/todo/TodoBoard";
+import { useParams } from "next/navigation";
 import TodoCreateForm from "@/components/todo/TodoCreateForm";
 import React from "react";
 
 export default function Home() {
+    const { status } = useParams();
     const { todos, setTodos } = useTodo();
 
     const { isPending, isError, error } = useQuery( {
         queryKey: [ "todo" ],
         queryFn: ( { signal } ) => getTodos( signal ),
         select: ( data: Todo[] ) => setTodos( data ),
-        throwOnError: false,
+        throwOnError: true,
         refetchOnWindowFocus: true
     } )
 
     if ( isPending ) {
-        return <TodoSkeletonGroup variant="ALL"/>
+        return <TodoSkeletonGroup variant="SINGLE"/>
     }
 
     if ( isError ) {
-        return <p className="flex w-full justify-center text-red-700">Error: { error.message }</p>
+        return <p>Error: { error.message }</p>
     }
     return (
-        <div className="flex flex-row gap-16 justify-center">
-            { todos.length == 0 ? <div className="flex flex-col">
+        <>
+            { todos.length == 0 ? <div className="flex flex-col items-center justify-start">
                 <TodoEmpty/>
                 <TodoCreateForm/>
             </div> : <>
-                <TodoBoard status={ TodoStatus.OPEN }/>
-                <TodoBoard status={ TodoStatus.IN_PROGRESS }/>
-                <TodoBoard status={ TodoStatus.DONE }/>
+                { status === "todo" ? <TodoBoard status={ TodoStatus.OPEN }/> : null }
+                { status === "doing" ? <TodoBoard status={ TodoStatus.IN_PROGRESS }/> : null }
+                { status === "done" ? <TodoBoard status={ TodoStatus.DONE }/> : null }
             </> }
-        </div>
+        </>
     );
 }
