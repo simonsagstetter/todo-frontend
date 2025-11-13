@@ -37,7 +37,7 @@ const TodoEditForm: React.FC = () => {
     const [ todoInput, setTodoInput ] = useState<FormState>( INITIAL_STATE );
     const { deleteTodo: deleteTodoFromState, updateTodo: updateTodoFromState } = useTodo();
     const { closeModal, currentId, isOpen } = useModal();
-    const { data, isFetched } = useQuery( {
+    const { data, isFetched, isPending: isPendingQuery } = useQuery( {
         queryKey: [ "todo", currentId ],
         queryFn: async ( { signal } ) => {
             const data = await getTodo( signal, currentId! );
@@ -115,16 +115,23 @@ const TodoEditForm: React.FC = () => {
     }
 
     return <Dialog open={ isOpen } onOpenChange={ ( open ) => !open ? closeModal() : null }>
-        { isFetched && data ?
-            <DialogContent>
-                <form action={ handleOnSubmit } className="space-y-8">
-                    <DialogHeader>
-                        <DialogTitle>Edit Todo</DialogTitle>
-                        <DialogDescription>
-                            Make changes to your todo here. Click save when you&apos;re
-                            done.
-                        </DialogDescription>
-                    </DialogHeader>
+        <DialogContent>
+            <form action={ handleOnSubmit } className="space-y-8">
+                <DialogHeader>
+                    <DialogTitle>Edit Todo</DialogTitle>
+                    <DialogDescription>
+                        Make changes to your todo here. Click save when you&apos;re
+                        done.
+                    </DialogDescription>
+                </DialogHeader>
+                { isPendingQuery ?
+                    <div className="flex flex-row justify-center items-center gap-2">
+                        <p className="text-base">Loading Values</p>
+                        <LoaderCircleIcon
+                            className="animate-spin"/>
+                    </div>
+                    : null }
+                { isFetched && data ?
                     <FieldSet>
                         <FieldGroup>
                             <Field>
@@ -182,27 +189,27 @@ const TodoEditForm: React.FC = () => {
                                 <FieldError>{ errorDelete.message }</FieldError> : null }
                         </FieldGroup>
                     </FieldSet>
-                    <DialogFooter className="flex flex-row justify-between!">
-                        <Button tabIndex={ 10 } className="cursor-pointer" type="button" variant="destructive"
-                                disabled={ isPending || isPendingDelete }
-                                onClick={ handleOnClickDelete }>Delete { isPendingDelete ?
-                            <LoaderCircleIcon className="animate-spin"/> : null }</Button>
-                        <div className="flex flex-row gap-2">
-                            <DialogClose asChild>
-                                <Button className="cursor-pointer" variant="outline"
-                                        disabled={ isPending || isPendingDelete }
-                                        onClick={ closeModal }>Cancel</Button>
-                            </DialogClose>
-                            <Button className="cursor-pointer" type="submit"
-                                    disabled={ isPending || isPendingDelete }>Save Change { isPending ?
-                                <LoaderCircleIcon className="animate-spin"/> : null }
-                            </Button>
-                        </div>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-            : null
-        }
+                    : null
+                }
+                <DialogFooter className="flex flex-row justify-between!">
+                    <Button tabIndex={ 10 } className="cursor-pointer" type="button" variant="destructive"
+                            disabled={ isPending || isPendingDelete || isPendingQuery }
+                            onClick={ handleOnClickDelete }>Delete { isPendingDelete ?
+                        <LoaderCircleIcon className="animate-spin"/> : null }</Button>
+                    <div className="flex flex-row gap-2">
+                        <DialogClose asChild>
+                            <Button className="cursor-pointer" variant="outline"
+                                    disabled={ isPending || isPendingDelete || isPendingQuery }
+                                    onClick={ closeModal }>Cancel</Button>
+                        </DialogClose>
+                        <Button className="cursor-pointer" type="submit"
+                                disabled={ isPending || isPendingDelete || isPendingQuery }>Save Change { isPending ?
+                            <LoaderCircleIcon className="animate-spin"/> : null }
+                        </Button>
+                    </div>
+                </DialogFooter>
+            </form>
+        </DialogContent>
     </Dialog>
 }
 
