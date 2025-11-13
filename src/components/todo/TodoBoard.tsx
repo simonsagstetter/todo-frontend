@@ -12,9 +12,9 @@ type TodoBoardProps = {
 }
 
 const variants = {
-    OPEN: "bg-zinc-900",
-    IN_PROGRESS: "bg-blue-600",
-    DONE: "bg-green-600"
+    OPEN: "bg-zinc-900 shadow-zinc-900/50",
+    IN_PROGRESS: "bg-blue-600 shadow-blue-300/70",
+    DONE: "bg-green-600 shadow-green-400/50"
 }
 
 const TodoBoard: React.FC<TodoBoardProps> = ( { status } ) => {
@@ -22,7 +22,7 @@ const TodoBoard: React.FC<TodoBoardProps> = ( { status } ) => {
     const todos = getTodoByStatus( status );
 
     return <ItemGroup key={ status } className="basis-1/3 px-4 space-y-4">
-        <Badge className={ `self-center text-sm px-6 ${ variants[ status ] }` }>
+        <Badge className={ `self-center text-sm px-6 shadow-sm ${ variants[ status ] }` }>
             { todoStatusMap.get( status ) || status }
         </Badge>
         { status === TodoStatus.OPEN ? <TodoCreateForm/> : null }
