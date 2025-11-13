@@ -57,7 +57,7 @@ const todoStateReducer = ( state: TodoState, action: TodoStoreAction ) => {
             todosByStatus: group( action.payload.todos )
         }
     } else if ( action.type === TodoStoreActionKind.ADD_TODO ) {
-        const updatedTodoArray = [ ...state.todos, action.payload.newTodo ];
+        const updatedTodoArray = [ action.payload.newTodo, ...state.todos ];
         return {
             ...state,
             todos: updatedTodoArray,
